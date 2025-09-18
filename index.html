@@ -443,8 +443,8 @@
 
         /* Animación continua de derecha a izquierda (el contenido se mueve hacia la izquierda) */
         @keyframes gx-scroll-ltr {
-          from { transform: translateX(-50%); }
-          to   { transform: translateX(0%); }
+          from { transform: translateX(0%); }
+          to   { transform: translateX(-50%); }
         }
 
         /* Responsive & Motion */
@@ -1076,7 +1076,7 @@
 
               const text = response.text.trim();
               const summaryPoints = text.split('\n').filter(line => line.trim().length > 0);
-              aiSummaryContainer.innerHTML = `<ul class="list-disc list-inside space-y-1">${summaryPoints.map(point => `<li>${point.replace(/^[\*\-]\s*/, '')}</li>`).join('')}</ul>`;
+              aiSummaryContainer.innerHTML = `<ul class="list-disc list-inside space-y-1">${summaryPoints.map(point => `<li>${point.replace(/^[\\*\\-]\\s*/, '')}</li>`).join('')}</ul>`;
           } catch (error) {
               console.error("Error generating AI summary:", error);
               aiSummaryContainer.innerHTML = '<p class="text-red-500">No se pudo generar el resumen. Por favor, intente de nuevo más tarde.</p>';
