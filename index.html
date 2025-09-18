@@ -489,49 +489,67 @@
             50% { opacity: 1; transform: scale(1.02); }
         }
         
-        /* ====== TYPEWRITER EFFECT ====== */
-        .typewriter-text {
-            /* This container is now standard LTR */
-            display: inline-block; /* Fit content */
-            max-width: 100%; /* Respect parent boundaries */
-            cursor: default; /* Show it's interactive on hover */
+        /* ====== TYPEWRITER EFFECT (ENHANCED & MINIMALIST) ====== */
+        /* This container creates the dark, styled box */
+        .typewriter-container {
+            display: inline-block; /* Crucial to size with the inner content */
+            background-color: #1C1C1C; /* Dark gray background */
+            border-radius: 6px; /* Softly rounded corners */
+            padding: 8px 24px; /* Thinner, elegant padding */
+            box-shadow: 0 6px 24px rgba(0,0,0,.15); /* Subtle shadow for depth */
+            cursor: default; /* Interactive feel */
+            transition: box-shadow var(--dur-base) var(--ease-apple);
         }
-        .typewriter-text span {
-            /* This element holds the text and the actual animations */
-            display: inline-block;
-            vertical-align: bottom;
-            white-space: normal; /* Allow text to wrap naturally */
-            
-            /* The caret is on the right, which is the leading edge in an LTR reveal */
-            border-right: .1em solid currentColor;
-            
-            /* Two animations: one for typing/erasing, one for the caret blink */
-            animation: 
-                typing-effect 8s steps(72) infinite, 
-                blink-caret .75s step-end infinite;
+        
+        .typewriter-container:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,.2);
         }
 
-        /* Pause the animations when the user hovers over the text container */
-        .typewriter-text:hover span {
+        /* The text element itself, now with specific styling for inside the box */
+        .typewriter-text {
+            color: #FFFFFF; /* White text */
+            font-size: 1.25rem; /* text-xl equivalent */
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            line-height: 1.5;
+            /* Default direction is LTR, so no 'direction' property needed */
+        }
+
+        /* The span is the core of the animation, it gets its width animated */
+        .typewriter-text span {
+            display: inline-block; /* Needed for width animation to work */
+            overflow: hidden; /* Hides the text outside of the current width */
+            white-space: nowrap; /* Prevents the text from wrapping */
+            vertical-align: bottom;
+            
+            /* The caret is on the RIGHT for LTR typing */
+            border-right: .1em solid #FFFFFF;
+            
+            /* Animation for typing/erasing width + caret blinking */
+            animation: 
+                typing-ltr 8s steps(72) infinite, 
+                blink-caret-ltr .75s step-end infinite;
+        }
+
+        /* Pause the animation on hover of the container */
+        .typewriter-container:hover .typewriter-text span {
             animation-play-state: paused;
         }
 
-        /* Keyframes for the typing and erasing effect using clip-path for performance */
-        @keyframes typing-effect {
+        /* Keyframes to animate the width from 0 to 100% and back (LTR) */
+        @keyframes typing-ltr {
             0%, 100% {
-                /* Text is fully clipped (hidden). The reveal starts from the left by clipping from the right */
-                clip-path: inset(0 100% 0 0);
+                width: 0;
             }
             50%, 75% {
-                /* Text is fully visible. Hold for 25% of the duration (2s) */
-                clip-path: inset(0 0 0 0);
+                /* Hold the full text for 25% of the duration */
+                width: 100%;
             }
         }
 
-        /* Keyframes for the blinking caret */
-        @keyframes blink-caret {
+        /* Keyframes for the caret blinking on the right side */
+        @keyframes blink-caret-ltr {
             from, to { border-right-color: transparent; }
-            50% { border-right-color: currentColor; }
+            50% { border-right-color: #FFFFFF; }
         }
 
         /* ====== GENERAL ANIMATIONS & UTILITIES ====== */
@@ -730,9 +748,13 @@
                 La Transformación Digital es Estrategia Corporativa, donde la Tecnología es solo el comienzo
               </span>
             </h1>
-            <p id="ai-subtitle" class="mt-4 text-xl text-brand-text-secondary max-w-2xl mx-auto typewriter-text">
-                <span>Alineamos estrategia, procesos y tecnología para liderar el futuro digital</span>
-            </p>
+            <div class="mt-8 flex justify-center">
+                <div class="typewriter-container">
+                    <p id="ai-subtitle" class="typewriter-text">
+                        <span>Alineamos estrategia, procesos y tecnología para liderar el futuro digital</span>
+                    </p>
+                </div>
+            </div>
           </div>
           
           <div class="max-w-6xl mx-auto text-left grid grid-cols-1 md:grid-cols-3 gap-12 mt-16 fade-in-section stagger-children">
