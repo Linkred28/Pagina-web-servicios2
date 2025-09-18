@@ -465,6 +465,53 @@
           background: linear-gradient(to right, var(--gx-bg-dark), rgba(0,0,0,0));
         }
 
+        /* ====== PRELOADER ====== */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background-color: var(--bg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s var(--ease-apple), visibility 0.8s var(--ease-apple);
+        }
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .preloader-content {
+            text-align: center;
+            animation: pulse-text 2s infinite var(--ease-apple);
+        }
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+        
+        /* ====== TYPEWRITER EFFECT ====== */
+        .typewriter-text {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .typewriter-text span {
+            border-right: .1em solid currentColor;
+            animation: typing 2.5s steps(60, end) forwards, blink-caret .75s step-end infinite;
+            white-space: normal; /* Allow text to wrap */
+            overflow: hidden;
+            display: inline-block;
+            max-width: 0;
+            vertical-align: top; /* Align caret correctly on wrapped lines */
+        }
+        @keyframes typing {
+            from { max-width: 0 }
+            to { max-width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: currentColor; }
+        }
 
         /* ====== GENERAL ANIMATIONS & UTILITIES ====== */
         .fade-in-section {
@@ -472,12 +519,12 @@
         }
         .fade-in-section.is-visible {
           opacity: 1;
-          transition: opacity 1s ease-out;
+          transition: opacity 1.2s ease-out;
         }
         .fade-in-section.is-visible > * {
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1.2s ease-out forwards;
+            transform: translateY(30px);
+            animation: fadeInUp 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
         /* Staggered animation for children */
@@ -498,7 +545,7 @@
         @keyframes zoomInUp {
             from {
                 opacity: 0;
-                transform: scale(0.95) translateY(20px);
+                transform: scale(0.9) translateY(30px);
             }
             to {
                 opacity: 1;
@@ -506,14 +553,27 @@
             }
         }
         
-        #video-grid.stagger-children.is-visible > .video-tile {
+        #video-grid.stagger-children.is-visible > .video-tile,
+        #beneficios .stagger-children.is-visible > .benefit-card {
             animation-name: zoomInUp;
+            animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-duration: 1.2s;
         }
         
         /* AI Content Loader */
         .ai-content-loading {
             filter: blur(5px);
             transition: filter 0.5s ease-out;
+        }
+
+        /* Pulsing CTA Button */
+        .pulsing-cta {
+            animation: pulse-glow 2.5s infinite var(--ease-apple);
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(255,255,255, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(255,255,255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,255,255, 0); }
         }
 
         details > summary {
@@ -588,6 +648,13 @@
     </script>
 </head>
 <body class="bg-brand-bg text-brand-text antialiased">
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+      <div class="preloader-content">
+        <h2 class="text-2xl font-bold text-brand-primary">InnovateNow Consulting</h2>
+      </div>
+    </div>
+    
     <header class="sticky top-0 z-40 bg-brand-bg/80 backdrop-blur-lg border-b border-hairline">
       <div class="container mx-auto px-6 py-4 flex justify-between items-center">
         <a href="#" class="text-xl font-bold text-brand-text">InnovateNow Consulting</a>
@@ -634,17 +701,18 @@
       </section>
 
       <!-- Hero Section -->
-      <section id="gx-hero" class="pt-16 md:pt-24 pb-20 md:pb-32 fade-in-section">
+      <section id="gx-hero" class="pt-16 md:pt-24 pb-20 md:pb-32">
         <div class="container mx-auto px-6 text-center">
           <div class="max-w-4xl mx-auto">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-center tracking-tight leading-tight mt-10 mb-7">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-center tracking-tight leading-tight typewriter-text">
               <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary">
                 La Transformación Digital es Estrategia Corporativa, donde la Tecnología es solo el comienzo
               </span>
             </h1>
+            <p id="ai-subtitle" class="mt-4 text-xl text-brand-text-secondary max-w-2xl mx-auto h-14 animate-pulse"></p>
           </div>
           
-          <div class="max-w-6xl mx-auto text-left grid grid-cols-1 md:grid-cols-3 gap-12 mt-16 stagger-children">
+          <div class="max-w-6xl mx-auto text-left grid grid-cols-1 md:grid-cols-3 gap-12 mt-16 fade-in-section stagger-children">
               <!-- Step 1: The Problem -->
               <div>
                   <div class="flex items-baseline">
@@ -824,7 +892,7 @@
             <h2 class="text-3xl md:text-4xl font-bold text-white">¿Listo para dar el siguiente paso?</h2>
             <p class="mt-4 text-lg text-white/90 max-w-2xl mx-auto">Hablemos de sus objetivos. Agende una sesión estratégica sin costo y descubra el potencial de una verdadera transformación digital.</p>
             <div class="mt-8">
-              <a href="#" class="inline-block bg-white text-brand-primary font-bold py-4 px-10 rounded-md text-lg hover:opacity-90 transition-opacity duration-200 transform hover:scale-105 dynamic-cta" data-analytics="final-cta-click">
+              <a href="#" class="inline-block bg-white text-brand-primary font-bold py-4 px-10 rounded-md text-lg hover:opacity-90 transition-opacity duration-200 transform hover:scale-105 pulsing-cta" data-analytics="final-cta-click">
                 Agende una Sesión Estratégica
               </a>
             </div>
@@ -866,6 +934,40 @@
         console.error("API Key for Gemini is not configured. AI features will be disabled.", error);
         ai = null;
       }
+      
+      // --- Preloader Logic ---
+      const preloader = document.getElementById('preloader');
+      if (preloader) {
+        window.addEventListener('load', () => {
+          setTimeout(() => {
+            preloader.classList.add('hidden');
+          }, 500); // Small delay to ensure content is ready
+        });
+      }
+      
+      // --- AI Hero Subtitle ---
+      const subtitleElement = document.getElementById('ai-subtitle');
+      async function generateAiSubtitle() {
+          if (!ai || !subtitleElement) {
+              if(subtitleElement) subtitleElement.style.display = 'none';
+              return;
+          };
+          try {
+              const prompt = `Genera un eslogan de una sola frase, potente y conciso (máximo 15 palabras) para una consultoría de transformación digital. El tono debe ser inspirador y profesional. Responde únicamente con el eslogan, sin numeración, comillas, ni texto introductorio.`;
+              const response = await ai.models.generateContent({
+                  model: 'gemini-2.5-flash',
+                  contents: prompt,
+              });
+              const text = response.text.trim();
+              subtitleElement.textContent = text.replace(/\"/g, ""); // Remove quotes
+              subtitleElement.classList.remove('animate-pulse');
+          } catch (error) {
+              console.error("Error generating AI subtitle:", error);
+              subtitleElement.textContent = 'Impulsando la siguiente era de su negocio.'; // Fallback text
+              subtitleElement.classList.remove('animate-pulse');
+          }
+      }
+      generateAiSubtitle();
         
       // --- DATA ---
       const videos = [
@@ -1155,23 +1257,6 @@
             localStorage.setItem('theme', newTheme);
             applyTheme(newTheme);
         });
-      }
-      
-      // --- DYNAMIC CTA TEXT ---
-      const ctaObserver = new IntersectionObserver((entries) => {
-        const headerCta = document.querySelector('header .dynamic-cta');
-        if (!headerCta) return;
-        
-        if (entries[0].isIntersecting) {
-          headerCta.textContent = "Hablemos Ahora";
-        } else {
-          headerCta.textContent = "Agende una Sesión";
-        }
-      }, { threshold: 0.5 });
-      
-      const finalCta = document.querySelector('#contacto .dynamic-cta');
-      if (finalCta) {
-        ctaObserver.observe(finalCta);
       }
     });
     </script>
