@@ -335,10 +335,10 @@
         #gx-ticker:hover .gx-ticker__track,
         #gx-ticker:focus-within .gx-ticker__track{ animation-play-state: paused; }
 
-        /* Animación continua de izquierda a derecha (el contenido se mueve hacia la derecha) */
-        @keyframes gx-scroll-ltr{
-          from { transform: translateX(0%); }
-          to   { transform: translateX(-50%); }
+        /* Animación continua de derecha a izquierda (el contenido se mueve hacia la izquierda) */
+        @keyframes gx-scroll-ltr {
+          from { transform: translateX(-50%); }
+          to   { transform: translateX(0%); }
         }
 
         /* Responsive & Motion */
@@ -500,51 +500,36 @@
             </h1>
           </div>
           
-          <div class="max-w-6xl mx-auto text-left grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 stagger-children">
+          <div class="max-w-6xl mx-auto text-left grid grid-cols-1 md:grid-cols-3 gap-12 mt-16 stagger-children">
               <!-- Step 1: The Problem -->
-              <div class="relative">
-                  <span class="absolute -top-8 -left-4 text-8xl font-black text-brand-border/30 dark:text-brand-border/10 -z-10 select-none">01</span>
-                  <div class="flex items-center gap-4">
-                      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                      </div>
-                      <h3 class="text-xl font-semibold text-brand-text">El Dilema Actual</h3>
+              <div>
+                  <div class="flex items-baseline">
+                      <span class="text-8xl font-extrabold text-brand-primary leading-none">01</span>
+                      <h3 class="ml-4 text-3xl font-bold text-brand-text">Dilema Actual</h3>
                   </div>
-                  <p class="mt-4 text-brand-text-secondary">
+                  <p class="mt-4 text-brand-text-secondary text-lg">
                       Hoy, las empresas líderes enfrentan un dilema: <strong class="font-semibold text-blue-600 dark:text-blue-400">procesos fragmentados, información poco confiable y decisiones que llegan tarde</strong>. En un entorno donde la velocidad define la competitividad, la transformación digital dejó de ser un proyecto de sistemas para convertirse en un <strong class="font-semibold text-blue-600 dark:text-blue-400">movimiento estratégico de negocio</strong>.
                   </p>
               </div>
 
               <!-- Step 2: The Vision -->
-              <div class="relative">
-                   <span class="absolute -top-8 -left-4 text-8xl font-black text-brand-border/30 dark:text-brand-border/10 -z-10 select-none">02</span>
-                   <div class="flex items-center gap-4">
-                      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                          </svg>
-                      </div>
-                      <h3 class="text-xl font-semibold text-brand-text">La Visión Integrada</h3>
+              <div>
+                  <div class="flex items-baseline">
+                      <span class="text-8xl font-extrabold text-brand-primary leading-none">02</span>
+                      <h3 class="ml-4 text-3xl font-bold text-brand-text">Visión Integrada</h3>
                   </div>
-                  <p class="mt-4 text-brand-text-secondary">
+                  <p class="mt-4 text-brand-text-secondary text-lg">
                       Cuando finanzas, operaciones, talento y tecnología se integran bajo una misma visión digital, tu organización obtiene <strong class="font-semibold text-blue-600 dark:text-blue-400">trazabilidad total, decisiones basadas en datos confiables y la capacidad de anticiparse a los riesgos</strong>. Eso no solo mejora la eficiencia: <strong class="font-semibold text-blue-600 dark:text-blue-400">redefine la manera en que la alta dirección ejerce liderazgo</strong>.
                   </p>
               </div>
 
               <!-- Step 3: The Outcome -->
-              <div class="relative">
-                   <span class="absolute -top-8 -left-4 text-8xl font-black text-brand-border/30 dark:text-brand-border/10 -z-10 select-none">03</span>
-                   <div class="flex items-center gap-4">
-                      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                         </svg>
-                      </div>
-                      <h3 class="text-xl font-semibold text-brand-text">El Salto Estratégico</h3>
+              <div>
+                  <div class="flex items-baseline">
+                      <span class="text-8xl font-extrabold text-brand-primary leading-none">03</span>
+                      <h3 class="ml-4 text-3xl font-bold text-brand-text">Salto Estratégico</h3>
                   </div>
-                  <p class="mt-4 text-brand-text-secondary">
+                  <p class="mt-4 text-brand-text-secondary text-lg">
                       Es el momento de pasar del <strong class="font-semibold text-blue-600 dark:text-blue-400">control operativo al gobierno empresarial con visión digital</strong>: más foco, más velocidad y mayor impacto en los resultados.
                   </p>
               </div>
