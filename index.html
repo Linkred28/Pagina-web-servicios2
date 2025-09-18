@@ -87,9 +87,9 @@
           --shadow-2: 0 12px 40px rgba(0,0,0,.08);
 
           /* Motion: suave, natural */
-          --ease-apple: cubic-bezier(.22,1,.36,1);
-          --dur-quick: 150ms;
-          --dur-base: 220ms;
+          --ease-apple: cubic-bezier(0.4, 0, 0.2, 1);
+          --dur-quick: 250ms;
+          --dur-base: 400ms;
         }
 
         /* ====== LIGHT (Corporate Navy) ====== */
@@ -234,32 +234,95 @@
         
         /* ====== VIDEO TILE SYSTEM ====== */
         .video-tile{
-          position:relative; overflow:hidden; border-radius: var(--radius-lg);
-          border:1px solid var(--hairline); background: var(--bg-elev);
+          position:relative; 
+          overflow:hidden; 
+          border-radius: var(--radius-lg);
+          background: var(--bg-elev);
           cursor: pointer;
+          border: 1px solid var(--hairline); /* Fallback border */
           transition: transform var(--dur-base) var(--ease-apple), box-shadow var(--dur-base) var(--ease-apple);
+          z-index: 1;
         }
+
+        /* This ::before will be the animated gradient border */
+        .video-tile::before {
+            content: '';
+            position: absolute;
+            inset: -2px; /* A bit thicker to be visible */
+            border-radius: inherit;
+            background: conic-gradient(from var(--angle), var(--brand-secondary) 0%, var(--primary) 50%, var(--brand-secondary) 100%);
+            opacity: 0;
+            transition: opacity var(--dur-base) var(--ease-apple);
+            animation: spin 6s linear infinite;
+            z-index: -2; /* Place behind content and default border */
+        }
+
+        @property --angle {
+          syntax: '<angle>';
+          initial-value: 0deg;
+          inherits: false;
+        }
+
+        @keyframes spin {
+          to {
+            --angle: 360deg;
+          }
+        }
+
         .video-tile:hover {
-            transform: scale(1.03);
+            transform: translateY(-4px);
             box-shadow: var(--shadow-2);
         }
-        .video-tile img{ width:100%; height:auto; display:block; }
+
+        .video-tile:hover::before {
+            opacity: 1;
+        }
+
+
+        .video-tile-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            /* Match card's top rounding */
+            border-top-left-radius: var(--radius-lg);
+            border-top-right-radius: var(--radius-lg);
+        }
+
+        .video-tile-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to top, rgba(10, 37, 64, 0.6), transparent 70%); /* Subtle gradient using brand color */
+            opacity: 0;
+            transition: opacity var(--dur-base) var(--ease-apple);
+            pointer-events: none;
+        }
+
+        .video-tile:hover .video-tile-overlay {
+            opacity: 1;
+        }
+
+        .play-icon {
+            transform: scale(0.8);
+            transition: transform var(--dur-base) var(--ease-apple);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+        .video-tile:hover .play-icon {
+            transform: scale(1);
+        }
+
+        .video-tile img { 
+            width:100%; height:auto; display:block; 
+            transition: transform var(--dur-base) var(--ease-apple);
+        }
+        .video-tile:hover img {
+            transform: scale(1.05);
+        }
+
         .video-tile .meta{ padding:16px 18px; }
         .video-tile .title{ font-weight:700; margin-bottom:6px; font-size: 1.125rem; }
         .video-tile .desc{ color: var(--text-weak); }
-
-        .video-tile .play{
-          position:absolute; inset:auto auto 16px 16px;
-          background: rgba(0,0,0,.6); color:#fff; backdrop-filter: saturate(1.2) blur(4px);
-          padding:8px 12px; border-radius: 999px; font-weight:600;
-          opacity:0; transform: translateY(6px);
-          transition: all var(--dur-base) var(--ease-apple);
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          pointer-events: none; /* So it doesn't interfere with the tile's click event */
-        }
-        .video-tile:hover .play{ opacity:1; transform: translateY(0); }
         
         /* ====== MODAL SYSTEM ====== */
         .modal-backdrop{
@@ -782,7 +845,7 @@
             summary: '<ul><li>Menos quiebres y sobrestock</li><li>Menor costo por entrega</li><li>Mejor cumplimiento (OTIF)</li><li>Visibilidad total de la operación</li></ul>',
             imageId: 1063,
             description: `
-                <p class='mb-4 text-brand-text-secondary'>Deje de ver su logística como un costo y conviértala en su mayor ventaja competitiva. Le ayudamos a construir una cadena de suministro resiliente, eficiente y totalmente visible, asegurando que sus clientes reciban lo que quieren, cuando lo quieren.</p>
+                <p class='mb-4 text-brand-text-secondary'>Deje de ver su logística como un costo y conviértala en su mayor ventaja competitiva. Le ayudamos a construir una cadena de suministro resiliente, eficiente y totalmente visible, asegurando que sus clientes recebam lo que quieren, cuando lo quieren.</p>
                 <h4 class='font-bold text-brand-text mt-4 mb-2'>Su Transformación, en la Práctica:</h4>
                 <ul class='list-disc list-inside space-y-1'>
                     <li><strong>Almacén Eficiente:</strong> Rediseñamos la distribución de su almacén para agilizar la preparación de pedidos.</li>
@@ -892,14 +955,17 @@
       if (videoGrid) {
         videoGrid.innerHTML = videos.map(video => `
           <div class="video-tile" data-video-id="${video.id}" tabindex="0" role="button" aria-haspopup="dialog">
-            <img src="https://picsum.photos/id/${video.imageId}/600/400" alt="${video.title}" loading="lazy" class="aspect-video object-cover">
+            <div class="video-tile-image-wrapper">
+              <img src="https://picsum.photos/id/${video.imageId}/600/400" alt="${video.title}" loading="lazy" class="aspect-video object-cover">
+              <div class="video-tile-overlay">
+                  <div class="play-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                  </div>
+              </div>
+            </div>
             <div class="meta">
               <h3 class="title text-brand-text">${video.title}</h3>
               <p class="desc">${video.benefit}</p>
-            </div>
-            <div class="play">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-              Ver video
             </div>
           </div>
         `).join('');
